@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="30">
+    <title>Crypto Dashboard - Victor Sagres</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: #121212; 
+            color: #ffffff; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+        h1 { color: #f2a900; margin-bottom: 25px; }
+        
+        /* Contêiner Principal */
+        .main-container { 
+            width: 95%; 
+            max-width: 900px; 
+            background: #1e1e1e; 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6); 
+        }
+
+        /* Ajuste da Tabela para não amontoar */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 30px; 
+        }
+        th { 
+            text-align: left; 
+            color: #888; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            border-bottom: 1px solid #333; 
+            padding: 10px; 
+        }
+        td { 
+            padding: 15px 10px; 
+            border-bottom: 1px solid #2a2a2a; 
+            vertical-align: middle; 
+        }
+
+        /* Alinhamento de Ícone e Nome */
+        .moeda-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-weight: bold; 
+            text-transform: capitalize; 
+        }
+        .moeda-info img { 
+            object-fit: contain; 
+        }
+
+        /* Estilo do Preço */
+        .preco-valor { 
+            font-family: 'Consolas', monospace; 
+            font-size: 1.1rem; 
+            color: #ffffff; 
+        }
+
+        /* Área do Gráfico */
+        .grafico-area { 
+            height: 300px; 
+            width: 100%; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Monitor de Criptoativos</h1>
+
+    <div class="main-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 35%;">Ativo</th>
+                    <th style="width: 35%;">Preço (USD)</th>
+                    <th style="width: 30%;">Última Coleta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for moeda, preco, hora in lista_precos %}
+                <tr>
+                    <td>
+                        <div class="moeda-info">
+                            {% if moeda == 'bitcoin' %}
+                                <img src="{{ url_for('static', filename='imagens/bitcoin-png.png') }}" width="25" height="25">
+                            {% elif moeda == 'ethereum' %}
+                                <img src="{{ url_for('static', filename='imagens/ethereum-png.png') }}" width="25" height="25">
+                            {% elif moeda == 'solana' %}
+                                <img src="{{ url_for('static', filename='imagens/solana-png.png') }}" width="25" height="25">
+                            {% endif %}
+                            <span>{{ moeda }}</span>
+                        </div>
+                    </td>
+                    <td class="preco-valor">
+                        $ {{ "{:,.2f}".format(preco) }}
+                    </td>
+                    <td style="color: #888; font-size: 0.9rem;">
+                        {{ hora }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="grafico-area">
+            <canvas id="graficoTendencia"></canvas>
+        </div>
+    </div>
+
+    <div id="dados-backend" 
+         data-precos='{{ precos_grafico | tojson }}' 
+         data-horas='{{ horas_grafico | tojson }}' 
+         style="display: none;">
+    </div>
+
+    <script>
+        // Captura os dados do "baú" HTML
+        const info = document.getElementById('dados-backend');
+        const listaPrecos = JSON.parse(info.getAttribute('data-precos'));
+        const listaHoras = JSON.parse(info.getAttribute('data-horas'));
+
+        const ctx = document.getElementById('graficoTendencia').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: listaHoras,
+                datasets: [{
+                    label: 'Variação Bitcoin',
+                    data: listaPrecos,
+                    borderColor: '#f2a900',
+                    backgroundColor: 'rgba(242, 169, 0, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: '#666' }, grid: { display: false } },
+                    y: { ticks: { color: '#666' }, grid: { color: '#333' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
