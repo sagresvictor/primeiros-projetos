@@ -3,7 +3,8 @@
 Este projeto é um **Dashboard de Criptomoedas** em tempo real, desenvolvido para monitorar Bitcoin, Ethereum e Solana. Ele une coleta automatizada de dados (Backend) com uma interface moderna e responsiva (Frontend).
 
 ## 📸 Visual do Projeto
-![Dashboard-cripto.png]
+[![Dashboard-cripto.png]
+](https://github.com/sagresvictor/primeiros-projetos/blob/main/Cripto%20Backend%20Python/print-do-programa/Dashboard-cripto.png)
 
 ## 🛠️ Tecnologias e Arquitetura
 * **Linguagem:** Python 3.14
