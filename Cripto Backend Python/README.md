@@ -3,15 +3,14 @@
 Este projeto é um **Dashboard de Criptomoedas** em tempo real, desenvolvido para monitorar Bitcoin, Ethereum e Solana. Ele une coleta automatizada de dados (Backend) com uma interface moderna e responsiva (Frontend).
 
 ## 📸 Visual do Projeto
-> **Dica:** Coloque um print do seu dashboard funcionando aqui!
-![Dashboard Screenshot](dashboard.png)
+![Dashboard-cripto.png]
 
 ## 🛠️ Tecnologias e Arquitetura
-* **Linguagem:** Python 3.12+
+* **Linguagem:** Python 3.14
 * **Framework Web:** Flask (Servidor e Rotas)
 * **Banco de Dados:** SQLite3 (Armazenamento persistente)
 * **Consumo de API:** Requests (Integração com CoinGecko)
-* **Frontend:** HTML5, CSS3 (Dark Mode) e Chart.js para gráficos.
+* **Frontend:** HTML5, CSS3 e Chart.js para gráficos.
 
 ---
 
